@@ -9,11 +9,13 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
+  console.log("Hit on app.get/");
 });
 
-// app.post("/", (req, res) => {
-//   res.send("Got a POST request");
-// });
+app.post("/", (req, res) => {
+  res.send("Got a POST request");
+  console.log("Hit on POST at app.post/");
+});
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
