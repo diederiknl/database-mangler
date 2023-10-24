@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
 const port = 3000;
@@ -7,14 +8,18 @@ const port = 3000;
 //app.use(express.static("static"));
 app.use(express.static(path.join(__dirname, "public")));
 
+// create application/x-www-form-urlencoded parser
+// Nodig om input te parsen vanuit een POST (https://expressjs.com/en/resources/middleware/body-parser.html)
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
   console.log("Hit on app.get/");
 });
 
-app.post("/", (req, res) => {
-  res.send("Got a POST request");
-  console.log("Hit on POST at app.post/");
+// POST / gets urlencoded bodies
+app.post("/", urlencodedParser, function (req, res) {
+  res.send("welcome, " + req.body.studentnummer);
 });
 
 app.listen(port, () => {
