@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'diedx'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8BB5FB23178143F4A815E4258529A139 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C8127C202B804C469516A9879E363AF4 }}
           package: .
