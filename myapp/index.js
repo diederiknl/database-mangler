@@ -11,7 +11,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // Configuratie voor templating
 app.set("view engine", "pug");
-app.set("views", "./views");
+app.set("views", "myapp/views");
 
 // create application/x-www-form-urlencoded parser
 // Nodig om input te parsen vanuit een POST (https://expressjs.com/en/resources/middleware/body-parser.html)
@@ -26,7 +26,7 @@ app.get("/", (req, res) => {
 app.post("/", urlencodedParser, function (req, res) {
   // File inlezen. Komt het studentnummer voor?
   let studentnummer = req.body.studentnummer;
-  var array = fs.readFileSync("studenten.txt").toString().split("\n");
+  var array = fs.readFileSync("myapp/studenten.txt").toString().split("\n");
 
   // Ok. Dus array.indexOf kunnen we gebruiken om
   if (array.includes(studentnummer) === true) {
