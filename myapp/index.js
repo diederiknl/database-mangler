@@ -3,7 +3,7 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
-const port = 3000;
+const port = 8080;
 
 // Statische spullen: (https://expressjs.com/en/starter/static-files.html)
 //app.use(express.static("static"));
