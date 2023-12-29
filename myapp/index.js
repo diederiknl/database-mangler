@@ -34,7 +34,7 @@ app.post("/", urlencodedParser, function (req, res) {
     // Database copieeren vóór mangelen
     // FIXME: Dit is natuurlijk wel een beetje ranzig. Laten we daar een variabele van maken
     // Hoe zit die , {} constructie in elkaar?
-    fs.copyFile('./myApp/database/bierendb.db', './myApp/database/'+studentnummer+'.db', (err) => {
+    fs.copyFile('./myapp/database/bierendb.db', './myapp/database/'+studentnummer+'.db', (err) => {
       if (err) throw err;
       console.log('Database copied ')
     });
