@@ -7,10 +7,8 @@ const port = 8080;
 //const hostname = '0.0.0.0'
 
 // Statische spullen: (https://expressjs.com/en/starter/static-files.html)
-//app.use(express.static("static"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// Configuratie voor templating
 app.set("view engine", "pug");
 app.set("views", "myapp/views");
 
@@ -18,12 +16,6 @@ app.set("views", "myapp/views");
 // Nodig om input te parsen vanuit een POST (https://expressjs.com/en/resources/middleware/body-parser.html)
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-  console.log("Hit on app.get/");
-});
-
-// POST / gets urlencoded bodies
 app.post("/", urlencodedParser, function (req, res) {
   // File inlezen. Komt het studentnummer voor?
   let studentnummer = req.body.studentnummer;
