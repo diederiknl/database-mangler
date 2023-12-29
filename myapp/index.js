@@ -3,8 +3,8 @@ const fs = require("fs");
 const bodyParser = require("body-parser");
 const path = require("path");
 const app = express();
-const port = 8081;
-const hostname = '0.0.0.0'
+const port = 8080;
+//const hostname = '0.0.0.0'
 
 // Statische spullen: (https://expressjs.com/en/starter/static-files.html)
 //app.use(express.static("static"));
