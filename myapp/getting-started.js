@@ -1,3 +1,5 @@
+
+
 const { MongoClient, ServerApiVersion } = require("mongodb");
 
 // Replace the placeholder with your Atlas connection string
@@ -31,7 +33,7 @@ async function run() {
 
     // Execute query
     const movie = await studenten.findOne(query);
-    console.log(movie);
+    console.log(movie.voornaam);
 
 
 
