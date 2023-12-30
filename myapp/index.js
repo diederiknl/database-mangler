@@ -1,41 +1,38 @@
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Variables for the webserver
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 const express = require("express");
-const fs = require("fs");
-const bodyParser = require("body-parser");
-const path = require("path");
 const app = express();
 const port = 8080;
 //const hostname = '0.0.0.0'
 
-// Statische spullen: (https://expressjs.com/en/starter/static-files.html)
-app.use(express.static(path.join(__dirname, "public")));
+// Needed to retrieve data from the body
+const bodyParser = require("body-parser");
+const path = require("path");
 
+// Webserver-configuration:
+// For the static website: (https://expressjs.com/en/starter/static-files.html)
+app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 app.set("views", "myapp/views");
 
+//const fs = require("fs"); // Currently we don't need FS anymore. Later with the database-copy we will re-enable it.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Start van code
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // create application/x-www-form-urlencoded parser
-// Nodig om input te parsen vanuit een POST (https://expressjs.com/en/resources/middleware/body-parser.html)
+// We need this to parse inport from a POST (https://expressjs.com/en/resources/middleware/body-parser.html)
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.post("/", urlencodedParser, function (req, res) {
-  // File inlezen. Komt het studentnummer voor?
+
   let studentnummer = req.body.studentnummer;
-  var array = fs.readFileSync("myapp/studenten.txt").toString().split("\n");
 
-  // Ok. Dus array.indexOf kunnen we gebruiken om
-  if (array.includes(studentnummer) === true) {
-    // Database copieeren vóór mangelen
-    // FIXME: Dit is natuurlijk wel een beetje ranzig. Laten we daar een variabele van maken
-    // Hoe zit die , {} constructie in elkaar?
-    fs.copyFile('./myapp/database/bierendb.db', './myapp/database/'+studentnummer+'.db', (err) => {
-      if (err) throw err;
-      console.log('Database copied ')
-    });
+// We need this copy later on.
+//   fs.copyFile('./myapp/database/bierendb.db', './myapp/database/'+studentnummer+'.db', (err) => {
 
-
-    res.render("index", { title: "Hey", message: "Gelukt!" });
-  } else {
-    res.render("index", { title: "Hey", message: "Mislukt!" });
-  }
 });
 
 app.listen(port, hostname => {
