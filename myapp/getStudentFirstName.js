@@ -10,7 +10,7 @@ const client = new MongoClient(uri,  {
     }
 );
 
-export async function getStudentFirstName(IntStudentnummer) {
+async function getStudentFirstName(IntStudentnummer) {
   // We krijgen IntStudentnummer. Is dit een nummer?
   if (isNaN(IntStudentnummer)) {
     throw new Error("IntStudentnummer is not a number");
@@ -39,5 +39,7 @@ export async function getStudentFirstName(IntStudentnummer) {
     await client.close();
   }
 }
+
+module.exports.voornaam = getStudentFirstName;
 
 //getStudentFirstName(IntStudentnummer).then(console.log)
