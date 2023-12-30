@@ -14,5 +14,8 @@
     "start": "node myapp/index.js"
   },
   "author": "Diederik de Vries",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "mongodb": "^6.3.0"
+  }
 }
