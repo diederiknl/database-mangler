@@ -18,7 +18,7 @@ const res = require("express/lib/response");
 // For the static website: (https://expressjs.com/en/starter/static-files.html)
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
-app.set("views", "./views");
+app.set("views", "myapp/views");
 
 //const fs = require("fs"); // Currently we don't need FS anymore. Later with the database-copy we will re-enable it.
 
@@ -46,7 +46,7 @@ app.post("/", urlencodedParser, function (req, res) {
           }
         else
           //res.render("download", { title: "Hey", message: "Gelukt!" });
-          res.render("download", { voornaam: "#{value}" });
+          res.render("download", { voornaam: value });
       },
       (reason) => {
         console.error(reason);
