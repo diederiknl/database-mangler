@@ -45,7 +45,8 @@ app.post("/", urlencodedParser, function (req, res) {
           res.status(404).send("Student not found");
           }
         else
-          res.render('download', { voornaam: value });
+          //res.render("download", { title: "Hey", message: "Gelukt!" });
+          res.render('download', { voornaam: "value" });
       },
       (reason) => {
         console.error(reason);
