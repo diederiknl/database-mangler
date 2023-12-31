@@ -1,7 +1,14 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Import of necessary modules
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+const fs = require("fs");
+const express = require("express");
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Variables for the webserver
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-const express = require("express");
+
 const app = express();
 const port = 8080;
 //const hostname = '0.0.0.0'
@@ -10,9 +17,8 @@ const port = 8080;
 const bodyParser = require("body-parser");
 const path = require("path");
 const student = require("./getStudentFirstName");
-const {voornaam} = require("./getStudentFirstName");
+const {GetFirstName} = require("./getStudentFirstName");
 const res = require("express/lib/response");
-
 
 // Webserver-configuration:
 // For the static website: (https://expressjs.com/en/starter/static-files.html)
@@ -20,44 +26,43 @@ app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "pug");
 app.set("views", "myapp/views");
 
-//const fs = require("fs"); // Currently we don't need FS anymore. Later with the database-copy we will re-enable it.
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Start van code
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // create application/x-www-form-urlencoded parser
-// We need this to parse inport from a POST (https://expressjs.com/en/resources/middleware/body-parser.html)
+// We need this to parse import from a POST (https://expressjs.com/en/resources/middleware/body-parser.html)
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 app.post("/", urlencodedParser, function (req, res) {
 
   let studentnummer = req.body.studentnummer;
 
-  // Yes! Dit blok geeft de studentvoornaam!
-  // voornaam(studentnummer).then(
-  //     console.log)
-
-  voornaam(studentnummer).then(
+  GetFirstName(studentnummer).then(
       (value) => {
         if (value=="NOSTUDENT") {
-          console.error("Student not found")
+          console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
           res.status(404).send("Student not found");
           }
         else
-          //res.render("download", { title: "Hey", message: "Gelukt!" });
+          voornaam = value;
+          console.log("voornaam ==", voornaam)
+          console.log("studentnummer ==", studentnummer);
+
+          fs.copyFile('./myApp/database/bierendb.db', './myApp/public/databases/'+studentnummer+'.db', (err) => {
+              if (err) throw err;
+              console.log('Database copied ')
+          });
+
+          // FIXME: Vanaf hier moet de database-mangler beginnen :)
+
+
           res.render("download", { voornaam: value });
       },
       (reason) => {
         console.error(reason);
       }
-  );
-
-  //getStudentFirstName(IntStudentnummer).then(console.log)
-
-// We need this copy later on.
-//   fs.copyFile('./myapp/database/bierendb.db', './myapp/database/'+studentnummer+'.db', (err) => {
-
+                );
 });
 
 app.listen(port, hostname => {

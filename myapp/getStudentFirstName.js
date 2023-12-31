@@ -40,6 +40,6 @@ async function getStudentFirstName(IntStudentnummer) {
   }
 }
 
-module.exports.voornaam = getStudentFirstName;
+module.exports.GetFirstName = getStudentFirstName;
 
 //getStudentFirstName(IntStudentnummer).then(console.log)
