@@ -9,6 +9,10 @@ const port = 8080;
 // Needed to retrieve data from the body
 const bodyParser = require("body-parser");
 const path = require("path");
+const student = require("./getStudentFirstName");
+const {voornaam} = require("./getStudentFirstName");
+const res = require("express/lib/response");
+
 
 // Webserver-configuration:
 // For the static website: (https://expressjs.com/en/starter/static-files.html)
@@ -29,6 +33,26 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.post("/", urlencodedParser, function (req, res) {
 
   let studentnummer = req.body.studentnummer;
+
+  // Yes! Dit blok geeft de studentvoornaam!
+  // voornaam(studentnummer).then(
+  //     console.log)
+
+  voornaam(studentnummer).then(
+      (value) => {
+        if (value=="NOSTUDENT") {
+          console.error("Student not found")
+          res.status(404).send("Student not found");
+          }
+        else
+          res.render('download', { voornaam: value });
+      },
+      (reason) => {
+        console.error(reason);
+      }
+  );
+
+  //getStudentFirstName(IntStudentnummer).then(console.log)
 
 // We need this copy later on.
 //   fs.copyFile('./myapp/database/bierendb.db', './myapp/database/'+studentnummer+'.db', (err) => {
