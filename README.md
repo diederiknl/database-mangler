@@ -9,4 +9,5 @@ Een tool om databases "on the fly" aan te passen voor studenten. En voor mij om 
 Deze async/await is opgelost. Houd er rekening mee dat een promise bij een return altijd een promise terugstuurd. Op te lossen met 
 //getStudentFirstName(IntStudentnummer).then(console.log)
 
-- [ ] Next up: Export is gedaan. Nu de functie importeren :)
+- [x] Next up: Export is gedaan. Nu de functie importeren :)
+- [ ] Functie geimporteerd. Veel geleerd. Nu de database-mangler erin :)
