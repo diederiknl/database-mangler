@@ -44,22 +44,26 @@ app.post("/", urlencodedParser, function (req, res) {
   //Waarom kom ik hier terug met een promise?? #spaghetticode
   var firstname = GetFirstName(studentnummer).then(
       (value) =>
-      {
-          // Was there a student? Or a DUD? If so, 404.
-          if (value == "NOSTUDENT") {
-              console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
-              res.status(404).send("Student not found");
-          }
-          else {
-              return value;
-          }
-
-          res.render("download", { voornaam: value });
-      },
+          {
+              // Was there a student? Or a DUD? If so, 404.
+              // This is somewhat gory. No else.
+              if (value == "NOSTUDENT") {
+                  console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
+                  res.status(404).send("Student not found");
+              }
+              // else {
+              //     // This is the positive loop. We have an existing username.
+              //     res.render("download", { voornaam: value });
+              // }
+          },
       (reason) =>
-      {
-        console.error(reason);
-      });
+          {
+            console.error(reason);
+          }
+      );
+
+
+// Hier eindigt de post.
 });
 
 
