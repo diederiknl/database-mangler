@@ -20,6 +20,9 @@ const student = require("./getStudentFirstName");
 const {GetFirstName} = require("./getStudentFirstName");
 const res = require("express/lib/response");
 
+// Database mangler
+const {mangler} = require("./mangler.js");
+
 // Webserver-configuration:
 // For the static website: (https://expressjs.com/en/starter/static-files.html)
 app.use(express.static(path.join(__dirname, "public")));
@@ -38,32 +41,27 @@ app.post("/", urlencodedParser, function (req, res) {
 
   let studentnummer = req.body.studentnummer;
 
-  GetFirstName(studentnummer).then(
-      (value) => {
-        if (value=="NOSTUDENT") {
-          console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
-          res.status(404).send("Student not found");
+  //Waarom kom ik hier terug met een promise?? #spaghetticode
+  var firstname = GetFirstName(studentnummer).then(
+      (value) =>
+      {
+          // Was there a student? Or a DUD? If so, 404.
+          if (value == "NOSTUDENT") {
+              console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
+              res.status(404).send("Student not found");
           }
-        else
-          voornaam = value;
-          console.log("voornaam ==", voornaam)
-          console.log("studentnummer ==", studentnummer);
-
-          fs.copyFile('./myApp/database/bierendb.db', './myApp/public/databases/'+studentnummer+'.db', (err) => {
-              if (err) throw err;
-              console.log('Database copied ')
-          });
-
-          // FIXME: Vanaf hier moet de database-mangler beginnen :)
-
+          else {
+              return value;
+          }
 
           res.render("download", { voornaam: value });
       },
-      (reason) => {
+      (reason) =>
+      {
         console.error(reason);
-      }
-                );
+      });
 });
+
 
 app.listen(port, hostname => {
   console.log(`Express started on ${port}`);
