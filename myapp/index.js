@@ -11,12 +11,11 @@ const express = require("express");
 
 const app = express();
 const port = 8080;
-//const hostname = '0.0.0.0'
+const hostname = '0.0.0.0'
 
 // Needed to retrieve data from the body
 const bodyParser = require("body-parser");
 const path = require("path");
-const student = require("./getStudentFirstName");
 const {GetFirstName} = require("./getStudentFirstName");
 const res = require("express/lib/response");
 
@@ -35,38 +34,50 @@ app.set("views", "myapp/views");
 
 // create application/x-www-form-urlencoded parser
 // We need this to parse import from a POST (https://expressjs.com/en/resources/middleware/body-parser.html)
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-app.post("/", urlencodedParser, function (req, res) {
+app.post("/", urlencodedParser, function (req, res)
+{
+    let studentnummer = req.body.studentnummer;
+    const firstname = GetFirstName(studentnummer)
+        .then(
+            (value) => {
+                // Was there a student? Or a DUD? If so, 404.
+                if (value == "NOSTUDENT") {
+                    console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
+                    res.status(404).send("Student not found");
+                } else {
+                    // res.render("index", {title: "Hey", message: `Hello ${value}`});
+                    console.log(value, studentnummer)
+                    // Hierboven hebben we alle gegevens!
+                    // Let's copy the database with the studentnumber:
 
-  let studentnummer = req.body.studentnummer;
-
-  //Waarom kom ik hier terug met een promise?? #spaghetticode
-  var firstname = GetFirstName(studentnummer).then(
-      (value) =>
-          {
-              // Was there a student? Or a DUD? If so, 404.
-              // This is somewhat gory. No else.
-              if (value == "NOSTUDENT") {
-                  console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
-                  res.status(404).send("Student not found");
-              }
-              // else {
-              //     // This is the positive loop. We have an existing username.
-              //     res.render("download", { voornaam: value });
-              // }
-          },
-      (reason) =>
-          {
-            console.error(reason);
-          }
-      );
+                    fs.copyFile('database/bierendb.db', 'public/databases/'+studentnummer+'.db', (err) => {
+                        if (err) throw err;
+                        console.log('Database copied ')
+                    });
 
 
-// Hier eindigt de post.
+
+
+
+                }
+            })
+        .then((value) =>
+            {
+                return(firstname)
+            })
+        .catch((err) =>
+            {
+                console.error(err);
+                res.status(500).send("Internal server error");
+            })
+        .finally(() =>
+            {
+                console.log("Finally, we are done!");
+            })
+
+
 });
 
-
-app.listen(port, hostname => {
-  console.log(`Express started on ${port}`);
-});
+    app.listen(port, hostname, () => { console.log(`Express started on ${port}`); });
