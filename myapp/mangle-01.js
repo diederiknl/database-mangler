@@ -10,7 +10,7 @@
 // INPUT: Studentnummer (to get the path to the database)
 // OUTPUT: None
 
-const sqlite3 = require ('sqlite3');
+//const sqlite3 = require ('sqlite3');
 
 // Main Function
 function adjust_alcohol(studentnummer) {

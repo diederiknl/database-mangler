@@ -39,43 +39,48 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.post("/", urlencodedParser, function (req, res)
 {
     let studentnummer = req.body.studentnummer;
-    const firstname = GetFirstName(studentnummer)
-        .then(
-            (value) => {
-                // Was there a student? Or a DUD? If so, 404.
-                if (value == "NOSTUDENT") {
-                    console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
-                    res.status(404).send("Student not found");
-                } else {
-                    // res.render("index", {title: "Hey", message: `Hello ${value}`});
-                    console.log(value, studentnummer)
-                    // Hierboven hebben we alle gegevens!
-                    // Let's copy the database with the studentnumber:
+    let werkdit = function(){
+        console.log(firstname)
+    }
 
-                    fs.copyFile('database/bierendb.db', 'public/databases/'+studentnummer+'.db', (err) => {
-                        if (err) throw err;
-                        console.log('Database copied ')
-                    });
+    const firstname = GetFirstName(studentnummer, werkdit)
+    
+        // .then(
+        //     (value) => {
+        //         // Was there a student? Or a DUD? If so, 404.
+        //         if (value == "NOSTUDENT") {
+        //             console.error("Studentnummer komt niet voor. Heb je een goed nummer ingevuld?")
+        //             res.status(404).send("Student not found");
+        //         } else {
+        //             // res.render("index", {title: "Hey", message: `Hello ${value}`});
+        //             console.log(value, studentnummer)
+        //             // Hierboven hebben we alle gegevens!
+        //             // Let's copy the database with the studentnumber:
+
+        //             fs.copyFile('database/bierendb.db', 'public/databases/'+studentnummer+'.db', (err) => {
+        //                 if (err) throw err;
+        //                 console.log('Database copied ')
+        //             });
 
 
 
 
 
-                }
-            })
-        .then((value) =>
-            {
-                return(firstname)
-            })
-        .catch((err) =>
-            {
-                console.error(err);
-                res.status(500).send("Internal server error");
-            })
-        .finally(() =>
-            {
-                console.log("Finally, we are done!");
-            })
+        //         }
+        //     })
+        // .then((value) =>
+        //     {
+        //         return(firstname)
+        //     })
+        // .catch((err) =>
+        //     {
+        //         console.error(err);
+        //         res.status(500).send("Internal server error");
+        //     })
+        // .finally(() =>
+        //     {
+        //         console.log("Finally, we are done!");
+        //     })
 
 
 });
