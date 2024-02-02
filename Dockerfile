@@ -4,6 +4,6 @@ LABEL authors="Diederik de Vries"
 WORKDIR /app
 COPY . .
 RUN npm install
-RUN npm start
+CMD npm start
 
-EXPOSE 8081/tcp
+EXPOSE 8080/tcp
